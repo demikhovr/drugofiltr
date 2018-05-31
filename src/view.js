@@ -19,7 +19,7 @@ let currentDrag = null;
 function renderFriends(data) {
     let friend = null;
 
-    if (JSON.parse(localStorage.getItem('friends'))) {
+    if (JSON.parse(localStorage.getItem('friends') || null)) {
         friends = JSON.parse(localStorage.getItem('friends'));
     }
 
@@ -34,7 +34,6 @@ function renderFriends(data) {
         data.forEach(item => {
             friend = new Friend(item);
             friend.render();
-
             friends.push(friend);
         });
     }
