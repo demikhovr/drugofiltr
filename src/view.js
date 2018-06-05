@@ -1,8 +1,8 @@
 'use strict';
 
-import { isMatching } from './helpers';
-import { templates } from './templates';
-import { Model } from './model';
+import { isMatching } from './helpers.js';
+import { templates } from './templates.js';
+import { Model } from './model.js';
 
 export const View = {
     renderFriends: renderFriends
