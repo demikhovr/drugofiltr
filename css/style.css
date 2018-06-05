@@ -208,7 +208,7 @@ img {
 .filter-field--search .filter-field__input {
     padding-left: 28px;
 
-    background-image: url("../img/icon-search.svg");
+    background-image: url("../img/icon-search.png");
     background-repeat: no-repeat;
     background-position: left 7px center;
     background-size: 13px 15px;

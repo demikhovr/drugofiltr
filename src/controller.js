@@ -9,15 +9,21 @@ export const Controller = {
         const appId = 6487485;
         const accessNumber = 2;
 
-        Model.login(appId, accessNumber)
-            .then(() => {
-                return Model.getFriends({ fields: friendFields });
-            })
-            .then(data => {
-                View.renderFriends(data.items);
-            })
-            .catch(evt => {
-                alert('Ошибка: ' + evt.message);
-            });
+        if (JSON.parse(localStorage.getItem('friends') || {})) {
+            const friends = JSON.parse(localStorage.getItem('friends'));
+
+            View.renderFriends(friends);
+        } else {
+            Model.login(appId, accessNumber)
+                .then(() => {
+                    return Model.getFriends({ fields: friendFields });
+                })
+                .then(data => {
+                    View.renderFriends(data.items);
+                })
+                .catch(evt => {
+                    alert('Ошибка: ' + evt.message);
+                });
+        }
     }
 };

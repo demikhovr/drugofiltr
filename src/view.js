@@ -2,6 +2,7 @@
 
 import { isMatching } from './helpers';
 import { templates } from './templates';
+import { Model } from './model';
 
 export const View = {
     renderFriends: renderFriends
@@ -13,30 +14,17 @@ const filterInputs = document.querySelectorAll('.filter-field__input');
 const friendsList = filter.querySelector('.friends-list--all ul');
 const selectedFriendsList = filter.querySelector('.friends-list--selected ul');
 const filterSaveBtn = filter.querySelector('.friends-filter__save');
-let friends = [];
+let renderedFriends = [];
 let currentDrag = null;
 
-function renderFriends(data) {
+function renderFriends(friends) {
     let friend = null;
 
-    if (JSON.parse(localStorage.getItem('friends') || null)) {
-        friends = JSON.parse(localStorage.getItem('friends'));
-    }
-
-    if (friends.length) {
-        friends = friends.map(item => {
-            friend = new Friend(item.data, item.isSelected);
-            friend.render();
-
-            return friend;
-        });
-    } else {
-        data.forEach(item => {
-            friend = new Friend(item);
-            friend.render();
-            friends.push(friend);
-        });
-    }
+    friends.forEach(item => {
+        friend = new Friend(item.data ? item.data : item, item.isSelected);
+        friend.render();
+        renderedFriends.push(friend);
+    });
 
     selectInit();
     filterInit();
@@ -70,7 +58,7 @@ function friendClickHandler(evt) {
     if (target) {
         const id = target.dataset.id;
 
-        friends.some(friend => {
+        renderedFriends.some(friend => {
             if (friend.data.id === +id) {
                 friend.isSelected = !friend.isSelected;
                 friend.render();
@@ -85,7 +73,7 @@ function friendDoubleClickHandler(evt) {
     if (target) {
         const id = target.querySelector('[data-id]').dataset.id;
 
-        friends.some(friend => {
+        renderedFriends.some(friend => {
             if (friend.data.id === +id) {
                 friend.isSelected = !friend.isSelected;
                 friend.render()
@@ -98,7 +86,7 @@ function filterInputHandler() {
     const filterValue = this.value;
     const isSelected = JSON.parse(this.dataset.selected);
 
-    friends.forEach(friend => {
+    renderedFriends.forEach(friend => {
         filterFriend(friend, filterValue, isSelected);
     });
 }
@@ -222,7 +210,7 @@ function friendDropHandler(evt) {
             let targetItem = evt.target.closest('.friends-list__item');
             const id = +currentDrag.node.querySelector('[data-id]').dataset.id;
 
-            friends.some(friend => {
+            renderedFriends.some(friend => {
                 if (friend.data.id === id) {
                     friend.isSelected = !friend.isSelected;
 
@@ -248,6 +236,5 @@ function friendDragEndHandler() {
 function saveBtnClickHandler(evt) {
     evt.preventDefault();
 
-    localStorage.setItem('friends', JSON.stringify(friends));
-    alert('Данные сохранены!');
+    Model.saveFriends(renderedFriends);
 }

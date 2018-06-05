@@ -31,6 +31,9 @@ export const Model = {
     },
     getFriends(params = {}) {
         return this.callApi('friends.get', params);
+    },
+    saveFriends(data) {
+        localStorage.setItem('friends', JSON.stringify(data));
+        alert('Данные сохранены!');
     }
 };
-
