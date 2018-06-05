@@ -9,7 +9,7 @@ export const Controller = {
         const appId = 6487485;
         const accessNumber = 2;
 
-        if (JSON.parse(localStorage.getItem('friends') || {})) {
+        if (JSON.parse(localStorage.getItem('friends') || null)) {
             const friends = JSON.parse(localStorage.getItem('friends'));
 
             View.renderFriends(friends);
